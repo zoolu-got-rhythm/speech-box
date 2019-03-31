@@ -1,4 +1,8 @@
 
+//TODO:
+// refactor straight line loop logic
+// put straight line plotting into it's own specific function
+
 let canvas = document.getElementById("c");
 let ctx = canvas.getContext("2d");
 
@@ -16,24 +20,69 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
     var pointsArray = [];
 
+    // draw from top-left to top-right along x axis
+
     let widthMinusBorderRadius = (width - borderRadius * 2);
     let xDistance = widthMinusBorderRadius / spacesBetweenPoints;
 
-    for(let xLocation = 0; xLocation <= widthMinusBorderRadius; xLocation += xDistance){
+    for(var xLocation = 0; xLocation < widthMinusBorderRadius; xLocation += xDistance){
         pointsArray.push(new Point(originPoint.x + xLocation, originPoint.y));
-        if(xLocation == widthMinusBorderRadius)
-            lastPoint = new Point(originPoint.x + xLocation, originPoint.y);
+    }
+
+    pointsArray.push(new Point(originPoint.x + xLocation, originPoint.y));
+
+
+    if(xLocation == widthMinusBorderRadius){
+        lastPoint = new Point(originPoint.x + xLocation, originPoint.y);
+        console.log("hit 1")
     }
 
     let topRightCurve = plotAngleCurvCoords(
         new Point(lastPoint.x, lastPoint.y + borderRadius),
         borderRadius,
-        10,
+        6,
         CURVE_ANGLE_ENUM.TOP_RIGHT);
 
     pointsArray.push(...topRightCurve);
 
+
+
+    // draw from top-right to bottom-right along y axis
+
+    let heightMinusBorderRadius = height - (borderRadius * 2);
+    let yDistance = heightMinusBorderRadius / (spacesBetweenPoints);
+
+    for(var yLocation = 0; yLocation < heightMinusBorderRadius; yLocation += yDistance){
+        pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
+    }
+
+    pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
+
+    if(yLocation == heightMinusBorderRadius){
+        console.log("hit 2");
+        lastPoint = new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius );
+    }
+
+    console.log(yLocation);
+    console.log("y distance");
+    console.log(heightMinusBorderRadius);
+
+    let bottomRightCurve = plotAngleCurvCoords(
+        new Point(lastPoint.x - borderRadius, lastPoint.y),
+        borderRadius,
+        6,
+        CURVE_ANGLE_ENUM.BOTTOM_RIGHT);
+
+    pointsArray.push(...bottomRightCurve);
+
+    // for()
+
+
     return pointsArray;
+}
+
+function plotStraightLineCoords(){
+
 }
 
 
@@ -44,11 +93,13 @@ function plotAngleCurvCoords(centerPoint, radius, nOfPoints, curveAngleEnum){
     let curveAngleDegreesToSubtract;
 
     switch (curveAngleEnum){
-        case CURVE_ANGLE_ENUM.TOP_RIGHT :
+        case CURVE_ANGLE_ENUM.TOP_RIGHT:
             curveAngleDegreesToSubtract = degreesToRadians(90);
             break;
-        default :
-            throw "curve angle not specified";
+        case CURVE_ANGLE_ENUM.BOTTOM_RIGHT:
+            curveAngleDegreesToSubtract = degreesToRadians(0);
+        default:
+            // throw "curve angle not specified"; // why does this always execute?
             break;
     }
 
@@ -101,7 +152,7 @@ function Point(x, y){
 
 let origin = new Point(200, 200);
 
-let plotArr = plotDialogueBoxCoords(origin, 200, 200, 50, 10);
+let plotArr = plotDialogueBoxCoords(origin, 200, 100, 25, 8);
 let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 drawCoords(ctx, plotArr);
