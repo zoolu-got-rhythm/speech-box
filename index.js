@@ -2,6 +2,12 @@
 let canvas = document.getElementById("c");
 let ctx = canvas.getContext("2d");
 
+const CURVE_ANGLE_ENUM = {
+    TOP_LEFT: 0,
+    TOP_RIGHT: 1,
+    BOTTOM_LEFT: 2,
+    BOTTOM_RIGHT: 3
+};
 
 
 function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesBetweenPoints){
@@ -19,25 +25,41 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
             lastPoint = new Point(originPoint.x + xLocation, originPoint.y);
     }
 
-    let topRightCurve = plotAngleCurvCoords(new Point(lastPoint.x, lastPoint.y + borderRadius), borderRadius, 10);
+    let topRightCurve = plotAngleCurvCoords(
+        new Point(lastPoint.x, lastPoint.y + borderRadius),
+        borderRadius,
+        10,
+        CURVE_ANGLE_ENUM.TOP_RIGHT);
+
     pointsArray.push(...topRightCurve);
 
     return pointsArray;
 }
 
 
-function plotAngleCurvCoords(centerPoint, radius, nOfPoints){
+function plotAngleCurvCoords(centerPoint, radius, nOfPoints, curveAngleEnum){
 
     var pointsArray = [];
 
+    let curveAngleDegreesToSubtract;
+
+    switch (curveAngleEnum){
+        case CURVE_ANGLE_ENUM.TOP_RIGHT :
+            curveAngleDegreesToSubtract = degreesToRadians(90);
+            break;
+        default :
+            throw "curve angle not specified";
+            break;
+    }
+
     for(let i = 1; i < nOfPoints; i++){
-        var x = centerPoint.x + radius * Math.cos((degreesToRadians(90) * (i / nOfPoints)) - degreesToRadians(90));
-        var y = centerPoint.y + radius * Math.sin((degreesToRadians(90) * (i / nOfPoints)) - degreesToRadians(90));
+        var x = centerPoint.x + radius * Math.cos((degreesToRadians(90) * (i / nOfPoints)) - curveAngleDegreesToSubtract);
+        var y = centerPoint.y + radius * Math.sin((degreesToRadians(90) * (i / nOfPoints)) - curveAngleDegreesToSubtract);
         pointsArray.push(new Point(x, y));
     }
 
-    var x = centerPoint.x + radius * Math.cos(degreesToRadians(90) - degreesToRadians(90));
-    var y = centerPoint.y + radius * Math.sin(degreesToRadians(90) - degreesToRadians(90));
+    var x = centerPoint.x + radius * Math.cos(degreesToRadians(90) - curveAngleDegreesToSubtract);
+    var y = centerPoint.y + radius * Math.sin(degreesToRadians(90) - curveAngleDegreesToSubtract);
     pointsArray.push(new Point(x, y));
 
     return pointsArray;
