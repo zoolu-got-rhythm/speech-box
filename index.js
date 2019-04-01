@@ -83,26 +83,30 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     console.log("width minus border rad");
     xDistance = widthMinusBorderRadius / spacesBetweenPoints;
 
+    console.log("x distance...");
+    console.log(xDistance);
     // need to fix this
-    for(let i = spacesBetweenPoints; i > 0; i--){
+    for(var i = spacesBetweenPoints; i > 0; i--){
         pointsArray.push(new Point(originPoint.x + (i * xDistance), originPoint.y + height));
-        console.log(xLocationBottom);
+        console.log((i * xDistance));
         console.log("in loop");
     }
-    console.log(xLocationBottom);
 
-    // pointsArray.push(new Point(originPoint.x + xLocationBottom, originPoint.y));
+    console.log((i * xDistance));
+    // console.log(xLocationBottom);
+
+    pointsArray.push(new Point(originPoint.x + (i * xDistance), originPoint.y + height));
 
 
     // if(xLocationBottom == 0){
-        lastPoint = new Point(originPoint.x + xLocationBottom, originPoint.y);
+        lastPoint = new Point(originPoint.x + (i * xDistance), originPoint.y + height);
     //     console.log("hit 3");
     // }
 
-    console.log(xLocationBottom);
+    // console.log(xLocationBottom);
 
     let bottomLeftCurve = plotAngleCurvCoords(
-        new Point(lastPoint.x + borderRadius * 2, lastPoint.y + height - borderRadius),
+        new Point(lastPoint.x, lastPoint.y - borderRadius),
         borderRadius,
         4,
         CURVE_ANGLE_ENUM.BOTTOM_LEFT);
@@ -217,7 +221,7 @@ function Point(x, y){
 
 let origin = new Point(200, 200);
 
-let plotArr = plotDialogueBoxCoords(origin, 300, 200, 15, 6);
+let plotArr = plotDialogueBoxCoords(origin, 150, 80, 15, 6);
 let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 // drawCoords(ctx, plotArr);
