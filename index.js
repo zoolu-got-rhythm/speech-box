@@ -186,9 +186,9 @@ function plotAngleCurvCoords(centerPoint, radius, nOfPoints, curveAngleEnum){
         pointsArray.push(new Point(x, y));
     }
 
-    var x = centerPoint.x + radius * Math.cos(degreesToRadians(90) - curveAngleDegreesToSubtract);
-    var y = centerPoint.y + radius * Math.sin(degreesToRadians(90) - curveAngleDegreesToSubtract);
-    pointsArray.push(new Point(x, y));
+    // var x = centerPoint.x + radius * Math.cos(degreesToRadians(90) - curveAngleDegreesToSubtract);
+    // var y = centerPoint.y + radius * Math.sin(degreesToRadians(90) - curveAngleDegreesToSubtract);
+    // pointsArray.push(new Point(x, y));
 
     return pointsArray;
 }
@@ -302,7 +302,7 @@ let origin = new Point(200, 200);
 
 // spaces between points argument must be even number of 4 or greather (i think)
 // add a width must be greather than height constraint
-let plotArr = plotDialogueBoxCoords(origin, 150, 80, 15, 6);
+let plotArr = plotDialogueBoxCoords(origin, 150, 150, 15, 6);
 let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 drawCoOrdsWithDots(canvas, plotArr);
