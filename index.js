@@ -75,10 +75,9 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
     pointsArray.push(...bottomRightCurve);
 
-    // for()
-
 
     // draw from bottom-right to bottom-left along x axis
+
     console.log(widthMinusBorderRadius);
     console.log("width minus border rad");
     xDistance = widthMinusBorderRadius / spacesBetweenPoints;
@@ -99,7 +98,7 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
     // if(xLocationBottom == 0){
-        lastPoint = new Point(originPoint.x + (i * xDistance), originPoint.y + height);
+    lastPoint = new Point(originPoint.x + (i * xDistance), originPoint.y + height);
     //     console.log("hit 3");
     // }
 
@@ -112,6 +111,41 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
         CURVE_ANGLE_ENUM.BOTTOM_LEFT);
 
     pointsArray.push(...bottomLeftCurve);
+
+
+
+
+
+
+
+    // draw from top-right to bottom-right along y axis
+
+
+    for(var y = spacesBetweenPoints / 2; y > 0; y--){
+        pointsArray.push(new Point(originPoint.x - borderRadius, originPoint.y + (y * yDistance)));
+    }
+
+    // pointsArray.push(new Point(originPoint.x - borderRadius, originPoint.y + (y * yDistance)));
+
+    lastPoint = new Point(originPoint.x, originPoint.y + borderRadius);
+
+
+    console.log(yLocation);
+    console.log("y distance");
+    console.log(heightMinusBorderRadius);
+
+    let topLeftCurve = plotAngleCurvCoords(
+        new Point(lastPoint.x, lastPoint.y),
+        borderRadius,
+        4,
+        CURVE_ANGLE_ENUM.TOP_LEFT);
+
+    pointsArray.push(...topLeftCurve);
+
+
+
+
+
 
 
     return pointsArray;
@@ -138,6 +172,9 @@ function plotAngleCurvCoords(centerPoint, radius, nOfPoints, curveAngleEnum){
         case CURVE_ANGLE_ENUM.BOTTOM_LEFT:
             curveAngleDegreesToSubtract = degreesToRadians(270);
             break;
+        case CURVE_ANGLE_ENUM.TOP_LEFT:
+            curveAngleDegreesToSubtract = degreesToRadians(180);
+            break;
         default:
             // throw "curve angle not specified"; // why does this always execute?
             break;
@@ -163,7 +200,10 @@ function degreesToRadians(degrees){
 
 // ctx = canvasContext to draw to
 
-function drawCoords(ctx, arr){
+function drawCoordsWithLines(canvas, arr){
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     let prevCoOrd;
     for(let i = 0; i < arr.length; i++){
         let currentPoint = arr[i];
@@ -177,20 +217,46 @@ function drawCoords(ctx, arr){
         if(i >= 1){
             ctx.beginPath();
             ctx.lineWidth = 8;
-            ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
-            ctx.lineTo(currentPoint.x, currentPoint.y);
+            if(i == arr.length - 1){
+                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);
+                ctx.lineTo(plotArr[0].x, plotArr[0].y);
+            }else{
+                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
+                ctx.lineTo(currentPoint.x, currentPoint.y);
+            }
             ctx.stroke();
+
         }
+
         prevCoOrd = currentPoint;
+    }
+
+
+}
+
+function drawCoOrdsWithDots(canvas, plotArr){
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let i = 0; i < plotArr.length; i++){
+        let currentPoint = plotArr[i];
+
+        if(i % 2 == 0){
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        }else{
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        }
+
+        ctx.fillRect(currentPoint.x - 2.5, currentPoint.y - 2.5, 5, 5)
     }
 }
 
-function drawCoordsWithTimer(ctx, arr){
+function drawCoordsWithTimer(ctx, plotArr, onDoneCallback){
     let prevCoOrd;
     let i = 0;
      // start
     var timer = window.setInterval(()=>{
-        let currentPoint = arr[i];
+        let currentPoint = plotArr[i];
 
         if(i % 2 == 0){
             ctx.strokeStyle = "lime";
@@ -198,17 +264,30 @@ function drawCoordsWithTimer(ctx, arr){
             ctx.strokeStyle = "pink";
         }
 
+        ctx.lineWidth = 8;
+
         if(i >= 1){
-            ctx.beginPath();
-            ctx.lineWidth = 8;
-            ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
-            ctx.lineTo(currentPoint.x, currentPoint.y);
-            ctx.stroke();
+
+            if(i == plotArr.length){
+                clearInterval(timer);
+                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);
+                ctx.lineTo(plotArr[0].x, plotArr[0].y);
+                ctx.stroke();
+                if(typeof onDoneCallback !== "undefined")
+                    onDoneCallback(plotArr);
+            }else{
+                ctx.beginPath();
+                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
+                ctx.lineTo(currentPoint.x, currentPoint.y);
+                ctx.stroke();
+            }
+
         }
         prevCoOrd = currentPoint;
         i++;
-        if(i == arr.length)
-            clearInterval(timer);
+
+
+
     }, 1000 / 60);
 
      // end
@@ -221,11 +300,61 @@ function Point(x, y){
 
 let origin = new Point(200, 200);
 
+// spaces between points argument must be even number of 4 or greather (i think)
+// add a width must be greather than height constraint
 let plotArr = plotDialogueBoxCoords(origin, 150, 80, 15, 6);
 let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
-// drawCoords(ctx, plotArr);
-drawCoordsWithTimer(ctx, plotArr);
+drawCoOrdsWithDots(canvas, plotArr);
+
+// drawCoordsWithTimer(ctx, plotArr, function(plotArrRef){
+//     window.setInterval(function(){
+//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 80, 15, 6));
+//     }, 200);
+// });
+
+function wiggleDialogueBox(plotArr){
+    var originCoOrdOffsetX, originCoOrdOffsetY;
+
+    let plotArrCopy = plotArr.slice(); // could use slice
+    for(let i = 0; i < plotArrCopy.length; i++){
+        var coOrd = plotArrCopy[i];
+        var randXOffset = generateRandomNegOrPosNumberInRangeX(2);
+        var randomYOffset = generateRandomNegOrPosNumberInRangeX(2);
+
+
+
+        if(i === plotArrCopy.length - 1){
+            console.log("assigning original rand offsets");
+            coOrd.x += originCoOrdOffsetX;
+            coOrd.y += originCoOrdOffsetY;
+            console.log(originCoOrdOffsetX);
+            console.log(originCoOrdOffsetY);
+        }else if(i == 0){
+            console.log('is zero');
+            originCoOrdOffsetX = randXOffset;
+            originCoOrdOffsetY = randomYOffset;
+            coOrd.x += originCoOrdOffsetX;
+            coOrd.y += originCoOrdOffsetY;
+            console.log(originCoOrdOffsetX);
+            console.log(originCoOrdOffsetY);
+        }else{
+            coOrd.x += randXOffset;
+            coOrd.y += randomYOffset;
+        }
+
+
+
+
+    }
+
+    drawCoords(canvas, plotArrCopy);
+}
+
+function generateRandomNegOrPosNumberInRangeX(x){
+    let division = x / 2;
+    return (0 - division) + Math.round(Math.random() * x)
+}
 
 
 
