@@ -338,14 +338,14 @@ let origin = new Point(200, 200);
 
 // spaces between points argument must be even number of 4 or greather (i think)
 // add a width must be greather than height constraint
-let plotArr = plotDialogueBoxCoords(origin, 150, 60, 15, 6);
+let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6);
 // let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 drawCoOrdsWithDots(canvas, plotArr);
 
 drawCoordsWithTimer(ctx, plotArr, function(plotArrRef){
     window.setInterval(function(){
-        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6));
+        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6));
     }, 50);
 });
 
@@ -355,8 +355,8 @@ function wiggleDialogueBox(plotArr){
     let plotArrCopy = plotArr.slice(); // could use slice
     for(let i = 0; i < plotArrCopy.length; i++){
         var coOrd = plotArrCopy[i];
-        var randXOffset = generateRandomNegOrPosNumberInRangeX(8);
-        var randomYOffset = generateRandomNegOrPosNumberInRangeX(8);
+        var randXOffset = generateRandomNegOrPosNumberInRangeX(2);
+        var randomYOffset = generateRandomNegOrPosNumberInRangeX(2);
 
 
 
