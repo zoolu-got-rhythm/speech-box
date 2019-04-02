@@ -49,8 +49,8 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
     // draw from top-right to bottom-right along y axis
 
-    let heightMinusBorderRadius = height - (borderRadius * 2);
-    let yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
+    var heightMinusBorderRadius = height - (borderRadius * 2);
+    var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
 
     for(var yLocation = 0; yLocation < heightMinusBorderRadius; yLocation += yDistance){
         pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
@@ -77,6 +77,8 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
     // draw from bottom-right to bottom-left along x axis
+
+
 
     console.log(widthMinusBorderRadius);
     console.log("width minus border rad");
@@ -118,14 +120,48 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
 
+    // draw from top-left to bottom-left along y axis
+
+
+
     // draw from top-right to bottom-right along y axis
+
+    // var heightMinusBorderRadius = height - (borderRadius * 2);
+    // var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
+    //
+    // for(var yLocation = 0; yLocation < heightMinusBorderRadius; yLocation += yDistance){
+    //     pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
+    // }
+    //
+    // pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
+    //
+    // if(yLocation == heightMinusBorderRadius){
+    //     console.log("hit 2");
+    //     lastPoint = new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius );
+    // }
+    //
+    // console.log(yLocation);
+    // console.log("y distance");
+    // console.log(heightMinusBorderRadius);
+    //
+    // let bottomRightCurve = plotAngleCurvCoords(
+    //     new Point(lastPoint.x - borderRadius, lastPoint.y),
+    //     borderRadius,
+    //     4,
+    //     CURVE_ANGLE_ENUM.BOTTOM_RIGHT);
+    //
+    // pointsArray.push(...bottomRightCurve);
+
+    var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
 
 
     for(var y = spacesBetweenPoints / 2; y > 0; y--){
-        pointsArray.push(new Point(originPoint.x - borderRadius, originPoint.y + (y * yDistance)));
+        pointsArray.push(new Point(originPoint.x - borderRadius, (originPoint.y + borderRadius) + (y * yDistance)));
     }
 
-    // pointsArray.push(new Point(originPoint.x - borderRadius, originPoint.y + (y * yDistance)));
+    pointsArray.push(new Point(originPoint.x - borderRadius, (originPoint.y + borderRadius) + (y * yDistance)));
+    console.log("end of bottom-left to top-left y value");
+    console.log(y * yDistance);
 
     lastPoint = new Point(originPoint.x, originPoint.y + borderRadius);
 
@@ -242,7 +278,7 @@ function drawCoOrdsWithDots(canvas, plotArr){
         let currentPoint = plotArr[i];
 
         if(i % 2 == 0){
-            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.fillStyle = "rgba(211, 255, 90, 0.5)";
         }else{
             ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
         }
@@ -302,16 +338,16 @@ let origin = new Point(200, 200);
 
 // spaces between points argument must be even number of 4 or greather (i think)
 // add a width must be greather than height constraint
-let plotArr = plotDialogueBoxCoords(origin, 150, 150, 15, 6);
-let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
+let plotArr = plotDialogueBoxCoords(origin, 150, 60, 15, 6);
+// let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 drawCoOrdsWithDots(canvas, plotArr);
 
-// drawCoordsWithTimer(ctx, plotArr, function(plotArrRef){
-//     window.setInterval(function(){
-//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 80, 15, 6));
-//     }, 200);
-// });
+drawCoordsWithTimer(ctx, plotArr, function(plotArrRef){
+    window.setInterval(function(){
+        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6));
+    }, 50);
+});
 
 function wiggleDialogueBox(plotArr){
     var originCoOrdOffsetX, originCoOrdOffsetY;
@@ -319,36 +355,36 @@ function wiggleDialogueBox(plotArr){
     let plotArrCopy = plotArr.slice(); // could use slice
     for(let i = 0; i < plotArrCopy.length; i++){
         var coOrd = plotArrCopy[i];
-        var randXOffset = generateRandomNegOrPosNumberInRangeX(2);
-        var randomYOffset = generateRandomNegOrPosNumberInRangeX(2);
+        var randXOffset = generateRandomNegOrPosNumberInRangeX(8);
+        var randomYOffset = generateRandomNegOrPosNumberInRangeX(8);
 
 
 
-        if(i === plotArrCopy.length - 1){
-            console.log("assigning original rand offsets");
-            coOrd.x += originCoOrdOffsetX;
-            coOrd.y += originCoOrdOffsetY;
-            console.log(originCoOrdOffsetX);
-            console.log(originCoOrdOffsetY);
-        }else if(i == 0){
-            console.log('is zero');
-            originCoOrdOffsetX = randXOffset;
-            originCoOrdOffsetY = randomYOffset;
-            coOrd.x += originCoOrdOffsetX;
-            coOrd.y += originCoOrdOffsetY;
-            console.log(originCoOrdOffsetX);
-            console.log(originCoOrdOffsetY);
-        }else{
+        // if(i === plotArrCopy.length - 1){
+        //     console.log("assigning original rand offsets");
+        //     coOrd.x += originCoOrdOffsetX;
+        //     coOrd.y += originCoOrdOffsetY;
+        //     console.log(originCoOrdOffsetX);
+        //     console.log(originCoOrdOffsetY);
+        // }else if(i == 0){
+        //     console.log('is zero');
+        //     originCoOrdOffsetX = randXOffset;
+        //     originCoOrdOffsetY = randomYOffset;
+        //     coOrd.x += originCoOrdOffsetX;
+        //     coOrd.y += originCoOrdOffsetY;
+        //     console.log(originCoOrdOffsetX);
+        //     console.log(originCoOrdOffsetY);
+        // }else{
             coOrd.x += randXOffset;
             coOrd.y += randomYOffset;
-        }
+        // }
 
 
 
 
     }
 
-    drawCoords(canvas, plotArrCopy);
+    drawCoOrdsWithDots(canvas, plotArrCopy);
 }
 
 function generateRandomNegOrPosNumberInRangeX(x){
