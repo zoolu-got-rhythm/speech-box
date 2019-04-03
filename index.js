@@ -2,6 +2,7 @@
 //TODO:
 // refactor straight line loop logic
 // put straight line plotting into it's own specific function
+// throw error if arguments don't meet param constraints
 
 let canvas = document.getElementById("c");
 let ctx = canvas.getContext("2d");
@@ -179,11 +180,6 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     pointsArray.push(...topLeftCurve);
 
 
-
-
-
-
-
     return pointsArray;
 }
 
@@ -236,31 +232,40 @@ function degreesToRadians(degrees){
 
 // ctx = canvasContext to draw to
 
-function drawCoordsWithLines(canvas, arr){
+function drawCoordsWithLines(canvas, plotArr, coloursArr, lineWidth){
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = lineWidth;
 
     let prevCoOrd;
-    for(let i = 0; i < arr.length; i++){
-        let currentPoint = arr[i];
-
+    for(let i = 0; i < plotArr.length; i++){
+        let currentPoint = plotArr[i];
+        let currentColour;
         if(i % 2 == 0){
-            ctx.strokeStyle = "lime";
+            currentColour = coloursArr[0];
         }else{
-            ctx.strokeStyle = "pink";
+            currentColour = coloursArr[1];
         }
 
+        ctx.strokeStyle = currentColour;
         if(i >= 1){
             ctx.beginPath();
-            ctx.lineWidth = 8;
-            if(i == arr.length - 1){
-                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);
-                ctx.lineTo(plotArr[0].x, plotArr[0].y);
-            }else{
-                ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
-                ctx.lineTo(currentPoint.x, currentPoint.y);
-            }
+            ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start
+            ctx.lineTo(currentPoint.x, currentPoint.y);
             ctx.stroke();
+
+
+            // join end of line to start of line
+            if(i == plotArr.length - 1){
+                ctx.beginPath();
+                ctx.strokeStyle = currentColour === coloursArr[0] ? coloursArr[1] : coloursArr[0];
+                ctx.moveTo(plotArr[plotArr.length - 1].x, plotArr[plotArr.length - 1].y);
+                ctx.lineTo(plotArr[0].x, plotArr[0].y);
+                ctx.stroke();
+
+            }
+
+
 
         }
 
@@ -287,7 +292,7 @@ function drawCoOrdsWithDots(canvas, plotArr){
     }
 }
 
-function drawCoordsWithTimer(ctx, plotArr, onDoneCallback){
+function drawCoordsWithTimer(ctx, plotArr, coloursArr, lineWidth, onDoneCallback){
     let prevCoOrd;
     let i = 0;
      // start
@@ -295,17 +300,18 @@ function drawCoordsWithTimer(ctx, plotArr, onDoneCallback){
         let currentPoint = plotArr[i];
 
         if(i % 2 == 0){
-            ctx.strokeStyle = "lime";
+            ctx.strokeStyle = coloursArr[0];
         }else{
-            ctx.strokeStyle = "pink";
+            ctx.strokeStyle = coloursArr[1];
         }
 
-        ctx.lineWidth = 8;
+        ctx.lineWidth = lineWidth;
 
         if(i >= 1){
-
             if(i == plotArr.length){
                 clearInterval(timer);
+                ctx.beginPath();
+                ctx.strokeStyle = ctx.strokeStyle === coloursArr[0] ? coloursArr[1] : coloursArr[0];
                 ctx.moveTo(prevCoOrd.x, prevCoOrd.y);
                 ctx.lineTo(plotArr[0].x, plotArr[0].y);
                 ctx.stroke();
@@ -317,7 +323,6 @@ function drawCoordsWithTimer(ctx, plotArr, onDoneCallback){
                 ctx.lineTo(currentPoint.x, currentPoint.y);
                 ctx.stroke();
             }
-
         }
         prevCoOrd = currentPoint;
         i++;
@@ -341,13 +346,14 @@ let origin = new Point(200, 200);
 let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6);
 // let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
-drawCoOrdsWithDots(canvas, plotArr);
+// drawCoOrdsWithDots(canvas, plotArr);
+// drawCoordsWithLines(canvas, plotArr, ["lime", "green"]);
 
-drawCoordsWithTimer(ctx, plotArr, function(plotArrRef){
-    window.setInterval(function(){
-        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6));
-    }, 50);
-});
+// drawCoordsWithTimer(ctx, plotArr, ["lime", "lime"], 4, function(plotArrRef){
+//     window.setInterval(function(){
+//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6));
+//     }, 50);
+// });
 
 function wiggleDialogueBox(plotArr){
     var originCoOrdOffsetX, originCoOrdOffsetY;
@@ -384,13 +390,25 @@ function wiggleDialogueBox(plotArr){
 
     }
 
-    drawCoOrdsWithDots(canvas, plotArrCopy);
+    // drawCoOrdsWithDots(canvas, plotArrCopy);
+    drawCoordsWithLines(canvas, plotArr, ["lime", "lime"], 4);
 }
 
 function generateRandomNegOrPosNumberInRangeX(x){
     let division = x / 2;
     return (0 - division) + Math.round(Math.random() * x)
 }
+
+function getMiddleOfOddNumber(n){
+    if(n % 2 == 0){
+        throw "parsed number must be odd";
+    }else{
+        return Math.ceil(n / 2);
+    }
+}
+
+console.log("middle number of odd", getMiddleOfOddNumber(7));
+
 
 
 
