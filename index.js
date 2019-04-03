@@ -335,19 +335,19 @@ let origin = new Point(200, 200);
 
 // spaces between points argument must be even number of 4 or greather (i think)
 // add a width must be greather than height constraint
-let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6, 8);
+let plotArr = plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8);
 // let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 // drawCoOrdsWithDots(canvas, plotArr);
 // drawCoordsWithLines(canvas, plotArr, ["lime", "green"]);
 
-// drawCoordsWithTimer(ctx, plotArr, ["lime", "lime"], 4, function(plotArrRef){
-//     window.setInterval(function(){
-//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6, 8));
-//     }, 50);
-// });
+drawCoordsWithTimer(ctx, plotArr, ["lime", "lime"], 4, function(plotArrRef){
+    window.setInterval(function(){
+        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
+    }, 50);
+});
 
-wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
+// wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
 
 
 function wiggleDialogueBox(plotArr){
