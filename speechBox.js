@@ -226,7 +226,6 @@ function degreesToRadians(degrees){
 
 function drawCoordsWithLines(canvas, plotArr, coloursArr, lineWidth){
     let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = lineWidth;
 
     let prevCoOrd;
@@ -263,13 +262,15 @@ function drawCoordsWithLines(canvas, plotArr, coloursArr, lineWidth){
 
         prevCoOrd = currentPoint;
     }
+}
 
-
+function clearCanvas(canvas){
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawCoOrdsWithDots(canvas, plotArr){
     let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for(let i = 0; i < plotArr.length; i++){
         let currentPoint = plotArr[i];
@@ -284,7 +285,10 @@ function drawCoOrdsWithDots(canvas, plotArr){
     }
 }
 
-function drawCoordsWithTimer(ctx, plotArr, coloursArr, lineWidth, onDoneCallback){
+function drawCoordsWithTimer(canvas, plotArr, coloursArr, lineWidth, onDoneCallback){
+
+    let ctx = canvas.getContext("2d");
+
     let prevCoOrd;
     let i = 0;
      // start
@@ -341,18 +345,16 @@ let plotArr = plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8);
 // drawCoOrdsWithDots(canvas, plotArr);
 // drawCoordsWithLines(canvas, plotArr, ["lime", "green"]);
 
-drawCoordsWithTimer(ctx, plotArr, ["lime", "lime"], 4, function(plotArrRef){
-    window.setInterval(function(){
-        wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
-    }, 50);
-});
+// drawCoordsWithTimer(canvas, plotArr, ["lime", "lime"], 4, function(plotArrRef){
+//     window.setInterval(function(){
+//         wiggleDialogueBox(canvas, plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
+//     }, 50);
+// });
 
 // wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
 
 
 function wiggleDialogueBox(plotArr){
-    var originCoOrdOffsetX, originCoOrdOffsetY;
-
     let plotArrCopy = plotArr.slice(); // could use slice
     for(let i = 0; i < plotArrCopy.length; i++){
         var coOrd = plotArrCopy[i];
@@ -362,15 +364,12 @@ function wiggleDialogueBox(plotArr){
 
         coOrd.x += randXOffset;
         coOrd.y += randomYOffset;
-
-
-
-
-
     }
 
+    return plotArrCopy;
+
     // drawCoOrdsWithDots(canvas, plotArrCopy);
-    drawCoordsWithLines(canvas, plotArr, ["lime", "lime"], 4);
+    // drawCoordsWithLines(canvas, plotArr, ["lime", "lime"], 4);
 }
 
 function generateRandomNegOrPosNumberInRangeX(x){
