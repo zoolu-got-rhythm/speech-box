@@ -15,7 +15,7 @@ const CURVE_ANGLE_ENUM = {
 };
 
 
-function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesBetweenPoints){
+function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesBetweenPoints, speechTriangleWidth){
 
     let lastPoint;
 
@@ -125,39 +125,31 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
 
-    // draw from top-right to bottom-right along y axis
 
-    // var heightMinusBorderRadius = height - (borderRadius * 2);
-    // var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
-    //
-    // for(var yLocation = 0; yLocation < heightMinusBorderRadius; yLocation += yDistance){
-    //     pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
-    // }
-    //
-    // pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
-    //
-    // if(yLocation == heightMinusBorderRadius){
-    //     console.log("hit 2");
-    //     lastPoint = new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius );
-    // }
-    //
-    // console.log(yLocation);
-    // console.log("y distance");
-    // console.log(heightMinusBorderRadius);
-    //
-    // let bottomRightCurve = plotAngleCurvCoords(
-    //     new Point(lastPoint.x - borderRadius, lastPoint.y),
-    //     borderRadius,
-    //     4,
-    //     CURVE_ANGLE_ENUM.BOTTOM_RIGHT);
-    //
-    // pointsArray.push(...bottomRightCurve);
+    let spacesForLeft;
+    // wrap into function
+    if(spacesBetweenPoints / 2 <= 5){
+        spacesForLeft = 5
+    }else{
+        if((spacesBetweenPoints / 2) % 2 == 0){
+            spacesForLeft = (spacesBetweenPoints / 2) + 1;
+        }else{
+            spacesForLeft = spacesBetweenPoints / 2;
+        }
+    }
+    // wrap into function
 
-    var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
+    var yDistance = heightMinusBorderRadius / spacesForLeft;
 
 
-    for(var y = spacesBetweenPoints / 2; y > 0; y--){
-        pointsArray.push(new Point(originPoint.x - borderRadius, (originPoint.y + borderRadius) + (y * yDistance)));
+    for(var y = spacesForLeft; y > 0; y--){
+        if(getMiddleOfOddNumber(spacesForLeft) == y){
+            pointsArray.push(new Point(originPoint.x - (borderRadius * 2 - (speechTriangleWidth)),
+                (originPoint.y + borderRadius) + (y * yDistance)));
+        }else{
+            pointsArray.push(new Point(originPoint.x - borderRadius,
+                (originPoint.y + borderRadius) + (y * yDistance)));
+        }
     }
 
     pointsArray.push(new Point(originPoint.x - borderRadius, (originPoint.y + borderRadius) + (y * yDistance)));
@@ -343,7 +335,7 @@ let origin = new Point(200, 200);
 
 // spaces between points argument must be even number of 4 or greather (i think)
 // add a width must be greather than height constraint
-let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6);
+let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6, 8);
 // let circlePlotArr = plotAngleCurvCoords(origin, 50, 8);
 
 // drawCoOrdsWithDots(canvas, plotArr);
@@ -351,9 +343,12 @@ let plotArr = plotDialogueBoxCoords(origin, 150, 40, 15, 6);
 
 // drawCoordsWithTimer(ctx, plotArr, ["lime", "lime"], 4, function(plotArrRef){
 //     window.setInterval(function(){
-//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6));
+//         wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 40, 15, 6, 8));
 //     }, 50);
 // });
+
+wiggleDialogueBox(plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8));
+
 
 function wiggleDialogueBox(plotArr){
     var originCoOrdOffsetX, originCoOrdOffsetY;
@@ -365,25 +360,9 @@ function wiggleDialogueBox(plotArr){
         var randomYOffset = generateRandomNegOrPosNumberInRangeX(2);
 
 
+        coOrd.x += randXOffset;
+        coOrd.y += randomYOffset;
 
-        // if(i === plotArrCopy.length - 1){
-        //     console.log("assigning original rand offsets");
-        //     coOrd.x += originCoOrdOffsetX;
-        //     coOrd.y += originCoOrdOffsetY;
-        //     console.log(originCoOrdOffsetX);
-        //     console.log(originCoOrdOffsetY);
-        // }else if(i == 0){
-        //     console.log('is zero');
-        //     originCoOrdOffsetX = randXOffset;
-        //     originCoOrdOffsetY = randomYOffset;
-        //     coOrd.x += originCoOrdOffsetX;
-        //     coOrd.y += originCoOrdOffsetY;
-        //     console.log(originCoOrdOffsetX);
-        //     console.log(originCoOrdOffsetY);
-        // }else{
-            coOrd.x += randXOffset;
-            coOrd.y += randomYOffset;
-        // }
 
 
 
@@ -400,8 +379,8 @@ function generateRandomNegOrPosNumberInRangeX(x){
 }
 
 function getMiddleOfOddNumber(n){
-    if(n % 2 == 0){
-        throw "parsed number must be odd";
+    if(n % 2 == 0 && n > 3){
+        throw "parsed number must be odd and must be greater than 3";
     }else{
         return Math.ceil(n / 2);
     }
