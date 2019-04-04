@@ -1,7 +1,7 @@
 
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("bold 32px arial", "hey", new Point(50, 50), 15);
+speechBoxWithText("32px dokdo", "ok??", new Point(50, 50), 15);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
@@ -20,7 +20,7 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
         6,
         9);
 
-    drawCoordsWithTimer(canvas, plotArr, ["lime", "lime"], 4, function(plotArrRef){
+    drawCoordsWithTimer(canvas, plotArr, ["lime", "pink"], 4, function(plotArrRef){
         window.setInterval(function(){
 
 
@@ -43,7 +43,7 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
             );
 
             let plotWithWigglesArr = wiggleDialogueBox(plotArr);
-            drawCoordsWithLines(canvas, plotWithWigglesArr, ["lime", "lime"], 4);
+            drawCoordsWithLines(canvas, plotWithWigglesArr, ["lime", "pink"], 4);
         }, 200);
     });
 }
