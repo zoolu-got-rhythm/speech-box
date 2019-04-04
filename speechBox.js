@@ -1,8 +1,5 @@
 
-//TODO:
-// refactor straight line loop logic
-// put straight line plotting into it's own specific function
-// throw error if arguments don't meet param constraints
+
 
 let canvas = document.getElementById("c");
 let ctx = canvas.getContext("2d");

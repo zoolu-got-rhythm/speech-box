@@ -1,7 +1,13 @@
 
+//TODO:
+// refactor straight line loop logic
+// put straight line plotting into it's own specific function
+// throw error if arguments don't meet param constraints
+// fix issue with failing to run with different character lengths of parsed in text to display
+
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("32px dokdo", "ok??", new Point(50, 50), 15);
+speechBoxWithText("32px dokdo", "hello", new Point(50, 50), 15);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
