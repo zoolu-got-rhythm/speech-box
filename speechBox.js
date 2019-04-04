@@ -355,7 +355,7 @@ let plotArr = plotDialogueBoxCoords(origin, 150, 60, 15, 6, 8);
 
 
 function wiggleDialogueBox(plotArr){
-    let plotArrCopy = plotArr.slice(); // could use slice
+    let plotArrCopy = [...plotArr]; // could use slice
     for(let i = 0; i < plotArrCopy.length; i++){
         var coOrd = plotArrCopy[i];
         var randXOffset = generateRandomNegOrPosNumberInRangeX(2);

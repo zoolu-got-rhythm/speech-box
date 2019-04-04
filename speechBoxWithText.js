@@ -1,7 +1,7 @@
 
 // let canvas = document.getElementById("c");
-
-speechBoxWithText("46px arial", "hello.....", new Point(50, 50), 15);
+// 32px dokdo
+speechBoxWithText("bold 32px arial", "hey", new Point(50, 50), 15);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
@@ -14,23 +14,37 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
 
     const plotArr = plotDialogueBoxCoords(
         originCoOrdinate,
-        Math.ceil(calculatedTextWidth) , // may need to round to whole number
-        Math.ceil(calculatedTextHeight), // may need to round to whole number
+        Math.ceil(calculatedTextWidth) + borderRadius , // may need to round to whole number
+        Math.ceil(calculatedTextHeight) + borderRadius, // may need to round to whole number
         borderRadius,
         6,
-        8);
+        9);
 
     drawCoordsWithTimer(canvas, plotArr, ["lime", "lime"], 4, function(plotArrRef){
         window.setInterval(function(){
+
+
+            const plotArr = plotDialogueBoxCoords(
+                originCoOrdinate,
+                Math.ceil(calculatedTextWidth) + borderRadius , // may need to round to whole number
+                Math.ceil(calculatedTextHeight) + borderRadius, // may need to round to whole number
+                borderRadius,
+                6,
+                9);
+
             clearCanvas(canvas);
             var ctx = canvas.getContext("2d");
             ctx.font = textStringSpecifications;
             ctx.fillStyle = "lime";
-            ctx.fillText(text, originCoOrdinate.x - borderRadius, originCoOrdinate.y + (calculatedTextHeight - calculatedTextHeight / 4));
+            ctx.fillText(text,
+                (originCoOrdinate.x - (borderRadius / 2)) + generateRandomNegOrPosNumberInRangeX(1),
+                (originCoOrdinate.y + (calculatedTextHeight - calculatedTextHeight / 4) + (borderRadius / 2))
+                + generateRandomNegOrPosNumberInRangeX(1)
+            );
 
             let plotWithWigglesArr = wiggleDialogueBox(plotArr);
             drawCoordsWithLines(canvas, plotWithWigglesArr, ["lime", "lime"], 4);
-        }, 100);
+        }, 200);
     });
 }
 
