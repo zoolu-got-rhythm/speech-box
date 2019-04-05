@@ -21,6 +21,13 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     // draw from top-left to top-right along x axis
 
     const widthMinusBorderRadius = (width - borderRadius * 2);
+
+    console.log("raw width parsed in to plot dialog box");
+    console.log(width);
+
+    console.log("width minus border rad * 2");
+    console.log(widthMinusBorderRadius);
+
     let xDistance = widthMinusBorderRadius / spacesBetweenPoints;
 
     for(var xLocation = 0; xLocation < widthMinusBorderRadius; xLocation += xDistance){
@@ -29,6 +36,9 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
     pointsArray.push(new Point(originPoint.x + xLocation, originPoint.y));
 
+    console.log("X LOCATION AT CRASH, SHOULD BE EQUAL TO WIDTH MINUS BORDER-RAD");
+    console.log(xLocation);
+    console.log(widthMinusBorderRadius);
 
     if(xLocation == widthMinusBorderRadius){
         lastPoint = new Point(originPoint.x + xLocation, originPoint.y);
