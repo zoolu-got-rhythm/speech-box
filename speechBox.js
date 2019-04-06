@@ -21,28 +21,22 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     // draw from top-left to top-right along x axis
 
     const widthMinusBorderRadius = (width - borderRadius * 2);
+    const heightMinusBorderRadius = height - (borderRadius * 2);
 
-    console.log("raw width parsed in to plot dialog box");
-    console.log(width);
+    const xDistance = widthMinusBorderRadius / spacesBetweenPoints;
+    const yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
 
-    console.log("width minus border rad * 2");
-    console.log(widthMinusBorderRadius);
+    for(let i = 0; i <= spacesBetweenPoints ; i++){
+        let currentPoint = new Point(
+            (originPoint.x) + (i * xDistance),
+            originPoint.y
+        );
 
-    let xDistance = widthMinusBorderRadius / spacesBetweenPoints;
-
-    for(var xLocation = 0; xLocation < widthMinusBorderRadius; xLocation += xDistance){
-        pointsArray.push(new Point(originPoint.x + xLocation, originPoint.y));
-    }
-
-    pointsArray.push(new Point(originPoint.x + xLocation, originPoint.y));
-
-    console.log("X LOCATION AT CRASH, SHOULD BE EQUAL TO WIDTH MINUS BORDER-RAD");
-    console.log(xLocation);
-    console.log(widthMinusBorderRadius);
-
-    if(xLocation == widthMinusBorderRadius){
-        lastPoint = new Point(originPoint.x + xLocation, originPoint.y);
-        console.log("hit 1");
+        pointsArray.push(currentPoint);
+        if(i == spacesBetweenPoints){
+            lastPoint = currentPoint;
+            console.log("hit 1");
+        }
     }
 
     let topRightCurve = plotAngleCurvCoords(
@@ -56,24 +50,17 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
     // draw from top-right to bottom-right along y axis
+    for(let i = 0; i <= spacesBetweenPoints / 2; i++){
+        let currentPoint = new Point(
+            originPoint.x + widthMinusBorderRadius + borderRadius,
+            originPoint.y + borderRadius + (i * yDistance));
 
-    var heightMinusBorderRadius = height - (borderRadius * 2);
-    var yDistance = heightMinusBorderRadius / (spacesBetweenPoints / 2);
-
-    for(var yLocation = 0; yLocation < heightMinusBorderRadius; yLocation += yDistance){
-        pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
+        pointsArray.push(currentPoint);
+        if(i == spacesBetweenPoints / 2){
+            console.log("hit 2");
+            lastPoint = currentPoint;
+        }
     }
-
-    pointsArray.push(new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius ));
-
-    if(yLocation == heightMinusBorderRadius){
-        console.log("hit 2");
-        lastPoint = new Point(originPoint.x + widthMinusBorderRadius + borderRadius, originPoint.y + yLocation + borderRadius );
-    }
-
-    console.log(yLocation);
-    console.log("y distance");
-    console.log(heightMinusBorderRadius);
 
     let bottomRightCurve = plotAngleCurvCoords(
         new Point(lastPoint.x - borderRadius, lastPoint.y),
@@ -85,34 +72,16 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
     // draw from bottom-right to bottom-left along x axis
+    for(let i = spacesBetweenPoints; i >= 0; i--){
+        let currentPoint = new Point(
+            originPoint.x + (i * xDistance),
+            originPoint.y + height
+        );
+        pointsArray.push(currentPoint);
 
-
-
-    console.log(widthMinusBorderRadius);
-    console.log("width minus border rad");
-    xDistance = widthMinusBorderRadius / spacesBetweenPoints;
-
-    console.log("x distance...");
-    console.log(xDistance);
-    // need to fix this
-    for(var i = spacesBetweenPoints; i > 0; i--){
-        pointsArray.push(new Point(originPoint.x + (i * xDistance), originPoint.y + height));
-        console.log((i * xDistance));
-        console.log("in loop");
+        if(i === 0)
+            lastPoint = currentPoint;
     }
-
-    console.log((i * xDistance));
-    // console.log(xLocationBottom);
-
-    pointsArray.push(new Point(originPoint.x + (i * xDistance), originPoint.y + height));
-
-
-    // if(xLocationBottom == 0){
-    lastPoint = new Point(originPoint.x + (i * xDistance), originPoint.y + height);
-    //     console.log("hit 3");
-    // }
-
-    // console.log(xLocationBottom);
 
     let bottomLeftCurve = plotAngleCurvCoords(
         new Point(lastPoint.x, lastPoint.y - borderRadius),
@@ -123,20 +92,11 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     pointsArray.push(...bottomLeftCurve);
 
 
-
-
-
-
-
     // draw from top-left to bottom-left along y axis
-
-
-
-
     let spacesForLeft;
     // wrap into function
     if(spacesBetweenPoints / 2 <= 5){
-        spacesForLeft = 5
+        spacesForLeft = 3
     }else{
         if((spacesBetweenPoints / 2) % 2 == 0){
             spacesForLeft = (spacesBetweenPoints / 2) + 1;
@@ -146,39 +106,28 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
     }
     // wrap into function
 
-    var yDistance = heightMinusBorderRadius / spacesForLeft;
+    for(let i = spacesForLeft; i >= 0; i--){
+        let currentPoint = new Point(originPoint.x - borderRadius,
+            (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft)));
 
-
-    for(var y = spacesForLeft; y > 0; y--){
-        if(getMiddleOfOddNumber(spacesForLeft) == y){
-            pointsArray.push(new Point(originPoint.x - (borderRadius * 2 - (speechTriangleWidth)),
-                (originPoint.y + borderRadius) + (y * yDistance)));
+        if(getMiddleOfOddNumber(spacesForLeft) == i){
+            pointsArray.push(new Point(originPoint.x - (borderRadius + speechTriangleWidth),
+                (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft))));
         }else{
-            pointsArray.push(new Point(originPoint.x - borderRadius,
-                (originPoint.y + borderRadius) + (y * yDistance)));
+            pointsArray.push(currentPoint);
         }
+
+        if(i == 0)
+            lastPoint = currentPoint
     }
 
-    pointsArray.push(new Point(originPoint.x - borderRadius, (originPoint.y + borderRadius) + (y * yDistance)));
-    console.log("end of bottom-left to top-left y value");
-    console.log(y * yDistance);
-
-    lastPoint = new Point(originPoint.x, originPoint.y + borderRadius);
-
-
-    console.log(yLocation);
-    console.log("y distance");
-    console.log(heightMinusBorderRadius);
-
     let topLeftCurve = plotAngleCurvCoords(
-        new Point(lastPoint.x, lastPoint.y),
+        new Point(lastPoint.x + borderRadius, lastPoint.y),
         borderRadius,
         4,
         CURVE_ANGLE_ENUM.TOP_LEFT);
 
     pointsArray.push(...topLeftCurve);
-
-
     return pointsArray;
 }
 

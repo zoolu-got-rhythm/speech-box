@@ -7,7 +7,7 @@
 
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("32px dokdo", "oki", new Point(50, 50), 15);
+speechBoxWithText("bold 25px dokdo", "gaming soc is here today", new Point(50, 50), 12);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
@@ -21,22 +21,14 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
     console.log("ceil");
     let widthOfBoxToDraw = Math.ceil(calculatedTextWidth) + borderRadius;
     let heightOfBoxToDraw = Math.ceil(calculatedTextHeight) + borderRadius;
-    console.log(widthOfBoxToDraw);
-    console.log(heightOfBoxToDraw);
 
-    console.log("go to nearest even number");
-    // quick fix
-    widthOfBoxToDraw = widthOfBoxToDraw % 2 == 0 ? widthOfBoxToDraw : widthOfBoxToDraw + 1;
-    heightOfBoxToDraw = heightOfBoxToDraw % 2 == 0 ? heightOfBoxToDraw : heightOfBoxToDraw + 1;
-    console.log(widthOfBoxToDraw);
-    console.log(heightOfBoxToDraw);
 
     const plotArr = plotDialogueBoxCoords(
         originCoOrdinate,
         widthOfBoxToDraw , // may need to round to whole number
         heightOfBoxToDraw, // may need to round to whole number
         borderRadius,
-        6,
+        10,
         9);
 
 
@@ -50,8 +42,8 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
                 widthOfBoxToDraw , // may need to round to whole number
                 heightOfBoxToDraw, // may need to round to whole number
                 borderRadius,
-                6,
-                9);
+                10,
+                7); // fix bubble triangle issue
 
             clearCanvas(canvas);
             var ctx = canvas.getContext("2d");
