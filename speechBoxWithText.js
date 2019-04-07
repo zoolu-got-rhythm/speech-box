@@ -7,7 +7,7 @@
 
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("bold 25px dokdo", "gaming soc is here today", new Point(50, 50), 12);
+speechBoxWithText("bold 20px dokdo", "blackjack!", new Point(50, 50), 12);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
