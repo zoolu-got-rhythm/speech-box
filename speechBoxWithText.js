@@ -29,21 +29,23 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
         heightOfBoxToDraw, // may need to round to whole number
         borderRadius,
         10,
-        9);
+        7);
 
 
 
     drawCoordsWithTimer(canvas, plotArr, ["lime", "pink"], 4, function(plotArrRef){
-        window.setInterval(function(){
+        window.setInterval(() => {
 
 
-            const plotArr = plotDialogueBoxCoords(
-                originCoOrdinate,
-                widthOfBoxToDraw , // may need to round to whole number
-                heightOfBoxToDraw, // may need to round to whole number
-                borderRadius,
-                10,
-                7); // fix bubble triangle issue
+            // const plotArr = plotDialogueBoxCoords(
+            //     originCoOrdinate,
+            //     widthOfBoxToDraw , // may need to round to whole number
+            //     heightOfBoxToDraw, // may need to round to whole number
+            //     borderRadius,
+            //     10,
+            //     7); // fix bubble triangle issue
+
+
 
             clearCanvas(canvas);
             var ctx = canvas.getContext("2d");
@@ -55,7 +57,10 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
                 + generateRandomNegOrPosNumberInRangeX(1)
             );
 
-            let plotWithWigglesArr = wiggleDialogueBox(plotArr);
+            let plotWithWigglesArr = wiggleDialogueBox(plotArrRef);
+            console.log(plotArrRef == plotWithWigglesArr);
+            console.log(plotArrRef);
+            console.log(plotWithWigglesArr);
             drawCoordsWithLines(canvas, plotWithWigglesArr, ["lime", "pink"], 4);
         }, 200);
     });
