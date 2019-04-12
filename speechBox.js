@@ -268,7 +268,7 @@ function drawCoordsWithTimer(canvas, plotArr, coloursArr, lineWidth, onDoneCallb
                 ctx.lineTo(plotArr[0].x, plotArr[0].y);
                 ctx.stroke();
                 if(typeof onDoneCallback !== "undefined")
-                    onDoneCallback(plotArr.slice());
+                    onDoneCallback(plotArr);
             }else{
                 ctx.beginPath();
                 ctx.moveTo(prevCoOrd.x, prevCoOrd.y);// start

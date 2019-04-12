@@ -7,7 +7,7 @@
 
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("bold 20px dokdo", "blackjack!", new Point(50, 50), 12);
+speechBoxWithText("bold 20px dokdo", "hello chris, yo", new Point(50, 50), 12);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
@@ -37,14 +37,13 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
         window.setInterval(() => {
 
 
-            // const plotArr = plotDialogueBoxCoords(
-            //     originCoOrdinate,
-            //     widthOfBoxToDraw , // may need to round to whole number
-            //     heightOfBoxToDraw, // may need to round to whole number
-            //     borderRadius,
-            //     10,
-            //     7); // fix bubble triangle issue
-
+            const plotArr = plotDialogueBoxCoords(
+                originCoOrdinate,
+                widthOfBoxToDraw , // may need to round to whole number
+                heightOfBoxToDraw, // may need to round to whole number
+                borderRadius,
+                10,
+                7); // fix bubble triangle issue
 
 
             clearCanvas(canvas);
@@ -57,10 +56,8 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
                 + generateRandomNegOrPosNumberInRangeX(1)
             );
 
-            let plotWithWigglesArr = wiggleDialogueBox(plotArrRef);
-            console.log(plotArrRef == plotWithWigglesArr);
-            console.log(plotArrRef);
-            console.log(plotWithWigglesArr);
+            let plotWithWigglesArr = wiggleDialogueBox(plotArr);
+
             drawCoordsWithLines(canvas, plotWithWigglesArr, ["lime", "pink"], 4);
         }, 200);
     });

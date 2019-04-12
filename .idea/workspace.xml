@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa4070d3-8d3c-49be-9aa6-23a0c263ac7a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/speechBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/speechBox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/speechBoxWithText.js" beforeDir="false" afterPath="$PROJECT_DIR$/speechBoxWithText.js" afterDir="false" />
     </list>
@@ -26,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="speechBox.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="speechBox.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/speechBox.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="243" column="69" selection-start-line="243" selection-start-column="69" selection-end-line="243" selection-end-column="69" />
+            <state relative-caret-position="118">
+              <caret line="253" column="23" lean-forward="true" selection-start-line="253" selection-start-column="23" selection-end-line="253" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -45,11 +46,11 @@
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file leaf-file-name="speechBoxWithText.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="speechBoxWithText.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/speechBoxWithText.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="59" column="32" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="32" />
+            <state relative-caret-position="255">
+              <caret line="63" column="1" lean-forward="true" selection-start-line="63" selection-start-column="1" selection-end-line="63" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -160,12 +161,12 @@
       <workItem from="1553784303429" duration="587000" />
       <workItem from="1553815323101" duration="4533000" />
       <workItem from="1553865454799" duration="56845000" />
-      <workItem from="1554678132007" duration="3951000" />
+      <workItem from="1554678132007" duration="5539000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65916000" />
+    <option name="totallyTimeSpent" value="67504000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -287,17 +288,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/speechBox.js">
+    <entry file="file://$PROJECT_DIR$/speechBoxWithText.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="243" column="69" selection-start-line="243" selection-start-column="69" selection-end-line="243" selection-end-column="69" />
+        <state relative-caret-position="255">
+          <caret line="63" column="1" lean-forward="true" selection-start-line="63" selection-start-column="1" selection-end-line="63" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/speechBoxWithText.js">
+    <entry file="file://$PROJECT_DIR$/speechBox.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="59" column="32" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="32" />
+        <state relative-caret-position="118">
+          <caret line="253" column="23" lean-forward="true" selection-start-line="253" selection-start-column="23" selection-end-line="253" selection-end-column="23" />
         </state>
       </provider>
     </entry>
