@@ -12,7 +12,7 @@ const CURVE_ANGLE_ENUM = {
 };
 
 
-function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesBetweenPoints, speechTriangleWidth){
+function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesBetweenPoints, speechTriangleWidth, specifiedSpacesToPlotOnLeftSide){
 
     let lastPoint;
 
@@ -93,32 +93,39 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 
     // draw from top-left to bottom-left along y axis
-    let spacesForLeft;
-    // wrap into function
-    if(spacesBetweenPoints / 2 <= 5){
-        spacesForLeft = 3
+
+
+    let spacesForLeft = takeNumberAndIncrementByOneIfEvenOrReturnOriginal(specifiedSpacesToPlotOnLeftSide);
+
+    // edge case if 1
+    if(spacesForLeft == 1){
+        pointsArray.push(new Point(originPoint.x - borderRadius,
+            (originPoint.y + borderRadius) + heightMinusBorderRadius));
+
+        pointsArray.push(new Point(originPoint.x - (borderRadius + speechTriangleWidth),
+            (originPoint.y + borderRadius) + (heightMinusBorderRadius / 2)));
+
+        pointsArray.push(new Point(originPoint.x - borderRadius,
+            originPoint.y + borderRadius));
+
+        lastPoint = new Point(originPoint.x - borderRadius,
+            originPoint.y + borderRadius);
+
     }else{
-        if((spacesBetweenPoints / 2) % 2 == 0){
-            spacesForLeft = (spacesBetweenPoints / 2) + 1;
-        }else{
-            spacesForLeft = spacesBetweenPoints / 2;
+        for(let i = spacesForLeft; i >= 0; i--){
+            let currentPoint = new Point(originPoint.x - borderRadius,
+                (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft)));
+
+            if(getMiddleOfOddNumber(spacesForLeft) == i){
+                pointsArray.push(new Point(originPoint.x - (borderRadius + speechTriangleWidth),
+                    (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft))));
+            }else{
+                pointsArray.push(currentPoint);
+            }
+
+            if(i == 0)
+                lastPoint = currentPoint
         }
-    }
-    // wrap into function
-
-    for(let i = spacesForLeft; i >= 0; i--){
-        let currentPoint = new Point(originPoint.x - borderRadius,
-            (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft)));
-
-        if(getMiddleOfOddNumber(spacesForLeft) == i){
-            pointsArray.push(new Point(originPoint.x - (borderRadius + speechTriangleWidth),
-                (originPoint.y + borderRadius) + (i * (heightMinusBorderRadius / spacesForLeft))));
-        }else{
-            pointsArray.push(currentPoint);
-        }
-
-        if(i == 0)
-            lastPoint = currentPoint
     }
 
     let topLeftCurve = plotAngleCurvCoords(
@@ -133,6 +140,15 @@ function plotDialogueBoxCoords(originPoint, width, height, borderRadius, spacesB
 
 function plotStraightLineCoords(){
 
+}
+
+// make a number odd if isn't already
+function takeNumberAndIncrementByOneIfEvenOrReturnOriginal(n){
+    if(n % 2 == 0){
+        return n + 1;
+    }else{
+        return n;
+    }
 }
 
 

@@ -7,7 +7,7 @@
 
 // let canvas = document.getElementById("c");
 // 32px dokdo
-speechBoxWithText("bold 20px dokdo", "hello chris, yo", new Point(50, 50), 12);
+speechBoxWithText("bold 20px dokdo", "yo!", new Point(50, 50), 12);
 
 
 function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, borderRadius){
@@ -29,7 +29,8 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
         heightOfBoxToDraw, // may need to round to whole number
         borderRadius,
         10,
-        7);
+        8,
+        1);
 
 
 
@@ -43,7 +44,8 @@ function speechBoxWithText(textStringSpecifications, text, originCoOrdinate, bor
                 heightOfBoxToDraw, // may need to round to whole number
                 borderRadius,
                 10,
-                7); // fix bubble triangle issue
+                8,
+                1); // fix bubble triangle issue
 
 
             clearCanvas(canvas);
