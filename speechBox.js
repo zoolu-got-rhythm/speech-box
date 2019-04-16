@@ -1,8 +1,6 @@
 
 
 
-let canvas = document.getElementById("c");
-let ctx = canvas.getContext("2d");
 
 const CURVE_ANGLE_ENUM = {
     TOP_LEFT: 0,
